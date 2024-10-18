@@ -1,16 +1,16 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { inMemoryUsersRepository } from "@/repositories/in-memory/in-memory-user-repository";
+import { InMemoryUsersRepository } from "@/repositories/in-memory/in-memory-user-repository";
 import { AuthenticateUseCase } from "./authenticate";
 import { hash } from "bcryptjs";
 import { InvalidCredentialsError } from "./errors/invalid-credentials-error";
 
-let usersRepository: inMemoryUsersRepository;
+let usersRepository: InMemoryUsersRepository;
 let sut: AuthenticateUseCase;
 
 describe("Authenticate Use Case", () => {
   beforeEach(() => {
     // eslint-disable-next-line new-cap
-    usersRepository = new inMemoryUsersRepository();
+    usersRepository = new InMemoryUsersRepository();
     sut = new AuthenticateUseCase(usersRepository);
   });
   it("Should be able to authenticate", async () => {
