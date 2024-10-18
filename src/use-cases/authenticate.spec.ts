@@ -1,15 +1,19 @@
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { inMemoryUsersRepository } from "@/repositories/in-memory/in-memory-user-repository";
 import { AuthenticateUseCase } from "./authenticate";
 import { hash } from "bcryptjs";
 import { InvalidCredentialsError } from "./errors/invalid-credentials-error";
 
-describe("Authenticate Use Case", () => {
-  it("Should be able to authenticate", async () => {
-    // eslint-disable-next-line new-cap
-    const usersRepository = new inMemoryUsersRepository();
-    const sut = new AuthenticateUseCase(usersRepository);
+let usersRepository: inMemoryUsersRepository;
+let sut: AuthenticateUseCase;
 
+describe("Authenticate Use Case", () => {
+  beforeEach(() => {
+    // eslint-disable-next-line new-cap
+    usersRepository = new inMemoryUsersRepository();
+    sut = new AuthenticateUseCase(usersRepository);
+  });
+  it("Should be able to authenticate", async () => {
     await usersRepository.create({
       name: "Jonh Doe",
       email: "jonhdoe@gmail.com",
@@ -25,10 +29,6 @@ describe("Authenticate Use Case", () => {
   });
 
   it("Should not be able to authenticate with wrong email", async () => {
-    // eslint-disable-next-line new-cap
-    const usersRepository = new inMemoryUsersRepository();
-    const sut = new AuthenticateUseCase(usersRepository);
-
     expect(() =>
       sut.execute({
         email: "johndoe@gmail.com",
@@ -38,10 +38,6 @@ describe("Authenticate Use Case", () => {
   });
 
   it("Should not be able to authenticate with wrong password", async () => {
-    // eslint-disable-next-line new-cap
-    const usersRepository = new inMemoryUsersRepository();
-    const sut = new AuthenticateUseCase(usersRepository);
-
     await usersRepository.create({
       name: "Jonh Doe",
       email: "jonhdoe@gmail.com",
